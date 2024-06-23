@@ -13,8 +13,9 @@ const login = async (req, res) => {
 	return wrapResponse(res, StatusCodes.OK, "Login successfully", { data });
 };
 
-const logout = (req, res) => {
-	AuthService.logout();
+const logout = async (req, res) => {
+	const user = await AuthService.logout(req.user.id);
+	attachCookies(res, user, false);
 	return wrapResponse(res, StatusCodes.OK, "Logout successfully");
 };
 

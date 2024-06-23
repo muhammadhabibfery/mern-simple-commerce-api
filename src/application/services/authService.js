@@ -28,8 +28,8 @@ const login = async (body) => {
 	return { data: user.self(), user };
 };
 
-const logout = () => {
-	return "Logout";
+const logout = async (userId) => {
+	return User.findOne({ _id: userId });
 };
 
 const deleteAllUsers = async () => {
