@@ -4,6 +4,7 @@ import helmet from "helmet";
 import xss from "xss-clean";
 import rateLimiter from "express-rate-limit";
 import mongoSanitize from "express-mongo-sanitize";
+import cookieParser from "cookie-parser";
 import corsOption from "../config/cors.js";
 import notFoundHandler from "./middlewares/notFoundHandler.js";
 import errorHandler from "./middlewares/errorHandler.js";
@@ -19,6 +20,7 @@ app.use(mongoSanitize());
 app.use(cors(corsOption));
 app.use(helmet());
 app.use(xss());
+app.use(cookieParser());
 app.use(express.json());
 
 app.use(baseRoute, router);
