@@ -3,34 +3,44 @@ import uniqueValidator from "mongoose-unique-validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+export const userRoles = ["admin", "user"];
+
 const userSchema = mongoose.Schema({
-	first_name: {
+	name: {
 		type: String,
 		trim: true,
-	},
-	last_name: {
-		type: String,
-		trim: true,
+		minLength: 3,
+		maxLength: 75,
 	},
 	email: {
 		type: String,
 		trim: true,
 		unique: true,
 	},
-	location: {
-		type: String,
-		trim: true,
-		default: null,
-	},
 	password: {
 		type: String,
+		minLength: 6,
+	},
+	role: {
+		type: String,
+		enum: userRoles,
+		default: userRoles[1],
+	},
+	createdAt: {
+		type: mongoose.Types.ObjectId,
+		ref: "User",
+		default: null,
+	},
+	updatedAt: {
+		type: mongoose.Types.ObjectId,
+		ref: "User",
+		default: null,
 	},
 });
 
-userSchema.index({ first_name: -1, last_name: -1, email: -1, location: -1 });
-userSchema.plugin(uniqueValidator, { message: "{PATH} must be unique value" });
+userSchema.index({ name: -1, email: -1 });
+userSchema.plugin(uniqueValidator, { message: "{PATH} has been registered" });
 
-// NOTE: When you run the method from instance class i.e: user.save(), then the pre & post save (the related hooks) would be triggered!
 userSchema.pre("save", async function () {
 	if (!this.isModified("password")) return;
 
@@ -41,10 +51,8 @@ userSchema.pre("save", async function () {
 userSchema.methods.self = function () {
 	return {
 		id: this._id,
-		first_name: this.first_name,
-		last_name: this.last_name,
+		name: this.first_name,
 		email: this.email,
-		location: this.location,
 	};
 };
 
