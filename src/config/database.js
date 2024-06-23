@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
-const connectDb = (url) => mongoose.connect(url);
+const connect = (url) => mongoose.connect(url);
 
-export default connectDb;
+const disconnect = () => mongoose.disconnect();
+
+export default { connect, disconnect };
