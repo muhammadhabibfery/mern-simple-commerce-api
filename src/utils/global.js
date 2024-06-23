@@ -1,6 +1,7 @@
 import path from "path";
 import { fileURLToPath } from "url";
 import { operatorFilterProperties } from "../config/global.js";
+import { clearCookie, setCookie } from "../config/cookie.js";
 
 export const wrapResponse = (res, code, message, records, errors) => {
 	let responseData = { code, message };
@@ -38,6 +39,12 @@ export const wrapData = (data, total, keyword) => {
 	};
 };
 
+export const attachCookies = (res, user, set = true) => {
+	set
+		? res.cookie("refreshToken", user.createToken(), setCookie)
+		: res.cookie("refreshToken", "", clearCookie);
+};
+
 export const convertOperatorFilters = (keyword, propertyList, regEx) => {
 	const result = {};
 
@@ -52,6 +59,16 @@ export const convertOperatorFilters = (keyword, propertyList, regEx) => {
 		});
 
 	return Object.keys(result).length > 0 ? result : undefined;
+};
+
+export const setParams = (
+	action,
+	model,
+	objectParams,
+	errClass,
+	body = null
+) => {
+	return { action, model, objectParams, body, errClass };
 };
 
 export const checkItem = async ({
