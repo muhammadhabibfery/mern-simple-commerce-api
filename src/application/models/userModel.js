@@ -51,8 +51,7 @@ userSchema.pre("save", async function () {
 userSchema.methods.self = function () {
 	return {
 		id: this._id,
-		name: this.first_name,
-		email: this.email,
+		role: this.role,
 	};
 };
 
