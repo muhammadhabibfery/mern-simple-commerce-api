@@ -20,7 +20,7 @@ app.use(mongoSanitize());
 app.use(cors(corsOption));
 app.use(helmet());
 app.use(xss());
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_KEY));
 app.use(express.json());
 
 app.use(baseRoute, router);

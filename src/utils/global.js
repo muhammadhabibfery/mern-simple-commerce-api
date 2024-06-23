@@ -54,16 +54,6 @@ export const convertOperatorFilters = (keyword, propertyList, regEx) => {
 	return Object.keys(result).length > 0 ? result : undefined;
 };
 
-export const setParams = (
-	action,
-	model,
-	objectParams,
-	errClass,
-	body = null
-) => {
-	return { action, model, objectParams, body, errClass };
-};
-
 export const checkItem = async ({
 	action,
 	model,
