@@ -51,6 +51,8 @@ userSchema.pre("save", async function () {
 userSchema.methods.self = function () {
 	return {
 		id: this._id,
+		name: this.name,
+		email: this.email,
 		role: this.role,
 	};
 };
@@ -61,7 +63,8 @@ userSchema.methods.checkPassword = async function (password) {
 
 userSchema.methods.createToken = function () {
 	const { JWT_SECRET_KEY, JWT_LIFETIME } = process.env;
-	return jwt.sign(this.self(), JWT_SECRET_KEY, { expiresIn: JWT_LIFETIME });
+	const { id, role } = this.self();
+	return jwt.sign({ id, role }, JWT_SECRET_KEY, { expiresIn: JWT_LIFETIME });
 };
 
 export default mongoose.model("User", userSchema);
