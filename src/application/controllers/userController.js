@@ -8,8 +8,8 @@ const getAll = async (req, res) => {
 };
 
 const update = async (req, res) => {
-	const user = await UserService.update(req);
-	return wrapResponse(res, StatusCodes.OK, "User updated successfully", user);
+	await UserService.update(req);
+	return wrapResponse(res, StatusCodes.OK, "User updated successfully");
 };
 
 export default { getAll, update };

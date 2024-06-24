@@ -37,8 +37,7 @@ const update = async ({ params, body, user }) => {
 		data
 	);
 
-	const userUpdated = await checkItem(payload);
-	return userUpdated.self();
+	checkItem(payload);
 };
 
 export default { getAll, update };
