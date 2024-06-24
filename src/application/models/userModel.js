@@ -50,10 +50,11 @@ userSchema.pre("save", async function () {
 	this.password = await bcrypt.hash(this.password, salt);
 });
 
-userSchema.post(/^find/, function (docs) {
-	const result = docs.map((doc) => {
+userSchema.post("find", function (docs) {
+	let result = docs.map((doc) => {
 		return doc.self();
 	});
+
 	return mongoose.overwriteMiddlewareResult(result);
 });
 
