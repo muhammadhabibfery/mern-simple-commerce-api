@@ -1,9 +1,12 @@
-import { wrapData } from "../../utils/global.js";
+import NotFoundError from "../../errors/notFoundError.js";
+import { checkItem, setParams, wrapData } from "../../utils/global.js";
 import User from "../models/userModel.js";
+import { updateUser } from "../validations/userValidation.js";
+import validate from "../validations/validate.js";
 
-const getAll = async (req) => {
-	const { search, role, page, size, skip } = req.query;
-	let queryObject = {};
+const getAll = async ({ query, user }) => {
+	const { search, role, page, size, skip } = query;
+	let queryObject = { _id: { $ne: user.id } };
 	const sortList = "-createdAt -_id";
 
 	// if (search) queryObject.name = { $regex: search, $options: "i" };
@@ -23,8 +26,19 @@ const getAll = async (req) => {
 	return wrapData(users, totalUsers, { page, size });
 };
 
-const update = async () => {
-	return "Update user";
+const update = async ({ params, body, user }) => {
+	let data = await validate(updateUser, body);
+	data = { ...data, updatedAt: user.id };
+	const payload = setParams(
+		"update",
+		User,
+		{ _id: params.id },
+		new NotFoundError("User not found"),
+		data
+	);
+
+	const userUpdated = await checkItem(payload);
+	return userUpdated.self();
 };
 
 export default { getAll, update };
