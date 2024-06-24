@@ -1,6 +1,6 @@
 import UnauthorizedError from "../../errors/UnauthorizedError.js";
 
-const adminAuthorizationHandler = (...roles) => {
+const userRoleAuthorizationHandler = (...roles) => {
 	return (req, res, next) => {
 		if (!roles.includes(req.user.role))
 			throw new UnauthorizedError("Unauthorized");
@@ -8,4 +8,4 @@ const adminAuthorizationHandler = (...roles) => {
 	};
 };
 
-export default adminAuthorizationHandler;
+export default userRoleAuthorizationHandler;
