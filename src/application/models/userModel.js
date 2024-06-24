@@ -5,6 +5,8 @@ import jwt from "jsonwebtoken";
 
 export const userRoles = ["admin", "user"];
 
+const availableUserFields = ["id", "name", "email", "role"];
+
 const userSchema = mongoose.Schema({
 	name: {
 		type: String,
@@ -48,13 +50,21 @@ userSchema.pre("save", async function () {
 	this.password = await bcrypt.hash(this.password, salt);
 });
 
+userSchema.post(/^find/, function (docs) {
+	const result = docs.map((doc) => {
+		return doc.self();
+	});
+	return mongoose.overwriteMiddlewareResult(result);
+});
+
 userSchema.methods.self = function () {
-	return {
-		id: this._id,
-		name: this.name,
-		email: this.email,
-		role: this.role,
-	};
+	let result = {};
+	availableUserFields.forEach((item) => {
+		if (item === "id") result[item] = this._id;
+		else result[item] = this[item];
+	});
+
+	return result;
 };
 
 userSchema.methods.checkPassword = async function (password) {
