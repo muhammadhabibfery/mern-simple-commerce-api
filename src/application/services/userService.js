@@ -28,7 +28,7 @@ const getAll = async ({ query, user }) => {
 
 const update = async ({ params, body, user }) => {
 	let data = await validate(updateUser, body);
-	data = { ...data, updatedAt: user.id };
+	data = { ...data, updatedBy: user.id };
 	const payload = setParams(
 		"update",
 		User,
