@@ -111,3 +111,8 @@ export const dirName = (filePath) => {
 export const convertToSlug = (value) => {
 	return value.toLowerCase().replace(" ", "-");
 };
+
+export const checkPassword = async (user, password, errClass) => {
+	const isCorrectPassword = await user.checkPassword(password);
+	if (!isCorrectPassword) throw errClass;
+};
