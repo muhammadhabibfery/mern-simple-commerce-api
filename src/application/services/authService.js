@@ -1,5 +1,5 @@
 import UnauthenticatedError from "../../errors/unauthenticatedError.js";
-import { checkItem, setParams } from "../../utils/global.js";
+import { checkItem, checkPassword, setParams } from "../../utils/global.js";
 import User from "../models/userModel.js";
 import {
 	loginValidation,
@@ -23,8 +23,7 @@ const login = async (body) => {
 	);
 
 	const user = await checkItem(params);
-	const isCorrectPassword = await user.checkPassword(password);
-	if (!isCorrectPassword) throw new UnauthenticatedError(errorMessage);
+	await checkPassword(user, password, new UnauthenticatedError(errorMessage));
 	return { data: user.self(), user };
 };
 
