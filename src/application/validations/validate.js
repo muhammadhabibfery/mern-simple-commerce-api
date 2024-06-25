@@ -13,7 +13,7 @@ const validate = async (schema, body, file = null, async = false) => {
 		: schema.validate(data, schemaConfig);
 
 	if (result?.error) throw new ValidationError(result.error.message);
-	else return result?.value && getValuesFromKeys(schemaKeys, result.value);
+	else return getValuesFromKeys(schemaKeys, result?.value || result);
 };
 
 const getValuesFromKeys = (keys, result) => {
