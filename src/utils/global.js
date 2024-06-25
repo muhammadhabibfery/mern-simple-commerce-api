@@ -85,6 +85,7 @@ export const checkItem = async ({
 			? await model.findOneAndUpdate(objectParams, body, {
 					new: true,
 					runValidators: true,
+					context: "query",
 			  })
 			: await model.findOneAndDelete(objectParams);
 
