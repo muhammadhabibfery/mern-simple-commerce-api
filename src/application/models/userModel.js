@@ -7,38 +7,41 @@ export const userRoles = ["admin", "user"];
 
 const availableUserFields = ["id", "name", "email", "role"];
 
-const userSchema = mongoose.Schema({
-	name: {
-		type: String,
-		trim: true,
-		minLength: 3,
-		maxLength: 75,
+const userSchema = mongoose.Schema(
+	{
+		name: {
+			type: String,
+			trim: true,
+			minLength: 3,
+			maxLength: 75,
+		},
+		email: {
+			type: String,
+			trim: true,
+			unique: true,
+		},
+		password: {
+			type: String,
+			minLength: 6,
+		},
+		role: {
+			type: String,
+			enum: userRoles,
+			default: userRoles[1],
+		},
+		createdBy: {
+			type: mongoose.Types.ObjectId,
+			ref: "User",
+			default: null,
+		},
+		updatedBy: {
+			type: mongoose.Types.ObjectId,
+			ref: "User",
+			default: null,
+		},
 	},
-	email: {
-		type: String,
-		trim: true,
-		unique: true,
-	},
-	password: {
-		type: String,
-		minLength: 6,
-	},
-	role: {
-		type: String,
-		enum: userRoles,
-		default: userRoles[1],
-	},
-	createdAt: {
-		type: mongoose.Types.ObjectId,
-		ref: "User",
-		default: null,
-	},
-	updatedAt: {
-		type: mongoose.Types.ObjectId,
-		ref: "User",
-		default: null,
-	},
-});
+	{ timestamps: true }
+);
 
 userSchema.index({ name: -1, email: -1 });
 userSchema.plugin(uniqueValidator, { message: "{PATH} has been registered" });
