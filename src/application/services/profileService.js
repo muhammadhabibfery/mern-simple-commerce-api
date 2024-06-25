@@ -18,7 +18,7 @@ const updateProfile = async ({ body, user }) => {
 		data
 	);
 
-	checkItem(params);
+	await checkItem(params);
 };
 
 const updatePassword = async ({ body, user }) => {
