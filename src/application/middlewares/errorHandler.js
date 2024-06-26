@@ -20,7 +20,10 @@ const errorHandler = (err, req, res, next) => {
 	if (err instanceof NotFoundError || err?.name === "CastError") {
 		status =
 			err?.code || err.path === "_id" ? StatusCodes.NOT_FOUND : status;
-		message = err?.path === "_id" ? "item not found" : message;
+		message =
+			err?.path === "_id" && err?.kind === "ObjectId"
+				? `${message.split(" ").pop().replace(/"/g, "")} not found`
+				: message;
 	}
 
 	return wrapResponse(res, status, message, null, errors);
