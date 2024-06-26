@@ -110,7 +110,7 @@ export const dirName = (filePath) => {
 };
 
 export const convertToSlug = (value) => {
-	return value.toLowerCase().replace(" ", "-");
+	return value.toLowerCase().replaceAll(" ", "-");
 };
 
 export const checkPassword = async (user, password, errClass) => {
