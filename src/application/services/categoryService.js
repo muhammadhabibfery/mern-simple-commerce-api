@@ -11,7 +11,7 @@ import validate from "../validations/validate.js";
 
 const notFoundErrMessage = "Category not found";
 
-const index = async ({ query, user }) => {
+const index = async ({ query }) => {
 	const { search, page, size, skip } = query;
 	let queryObject = {};
 	const sortList = "-createdAt -_id";
