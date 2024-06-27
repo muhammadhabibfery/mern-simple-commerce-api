@@ -61,35 +61,6 @@ export const convertOperatorFilters = (keyword, propertyList, regEx) => {
 	return Object.keys(result).length > 0 ? result : undefined;
 };
 
-export const setParams = (action, model, objectParams, errClass, { body = null, additonalData = null } = {}) => {
-	return { action, model, objectParams, body, errClass, additonalData };
-};
-export const checkItem = async ({ action, model, objectParams, body, errClass }) => {
-	const item =
-		action === "get"
-			? await model.findOne(objectParams)
-			: action === "update"
-			? await model.findOneAndUpdate(objectParams, body, {
-					new: true,
-					runValidators: true,
-					context: "query",
-			  })
-			: await model.findOneAndDelete(objectParams);
-
-	if (!isExistsObjectParams(objectParams) || !item) throw errClass;
-
-	return item;
-};
-const isExistsObjectParams = (queries) => {
-	let isExists = true;
-
-	for (let key in queries) {
-		if (queries[key] === null || queries[key] === undefined) isExists = false;
-	}
-
-	return isExists;
-};
-
 export const modelAction = async ({ model, action, queries, errClass, data, additonalData }) => {
 	let result;
 	const options = { additonalData };
