@@ -19,9 +19,4 @@ const logout = async (req, res) => {
 	return wrapResponse(res, StatusCodes.OK, "Logout successfully");
 };
 
-const deleteAllUsers = async (req, res) => {
-	await AuthService.deleteAllUsers();
-	return wrapResponse(res, StatusCodes.OK, "Delete all users successfully");
-};
-
-export default { register, login, logout, deleteAllUsers };
+export default { register, login, logout };

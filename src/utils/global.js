@@ -67,7 +67,7 @@ export const modelAction = async ({ model, action, queries, errClass, data, addi
 
 	switch (action) {
 		case "get":
-			result = await model.findOne(queries, options);
+			result = await model.findOne(queries);
 			break;
 		case "create":
 			result = await model.create(data);
