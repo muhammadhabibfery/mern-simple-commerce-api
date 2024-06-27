@@ -29,13 +29,13 @@ const index = async ({ query }) => {
 };
 
 const create = async ({ body, user }) => {
-	let data = await validate(categoryValidation, body, null, true);
+	let data = await validate(categoryValidation, body);
 	data = addAdditionalData(data, user.id);
 	await Category.create(data);
 };
 
 const update = async ({ params, body, user }) => {
-	let data = await validate(categoryValidation, body, null, true);
+	let data = await validate(categoryValidation, body);
 	data = addAdditionalData(data, user.id, false);
 	const payload = setParams(
 		"update",
