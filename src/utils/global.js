@@ -3,6 +3,8 @@ import { fileURLToPath } from "url";
 import { operatorFilterProperties } from "../config/global.js";
 import { clearCookie, setCookie } from "../config/cookie.js";
 import UnauthorizedError from "../errors/UnauthorizedError.js";
+import CustomError from "../errors/customError.js";
+import { StatusCodes } from "http-status-codes";
 
 export const wrapResponse = (res, code, message, records, errors) => {
 	let responseData = { code, message };
@@ -59,28 +61,68 @@ export const convertOperatorFilters = (keyword, propertyList, regEx) => {
 	return Object.keys(result).length > 0 ? result : undefined;
 };
 
-export const setParams = (action, model, objectParams, errClass, body = null) => {
-	return { action, model, objectParams, body, errClass };
+export const setParams = (action, model, objectParams, errClass, { body = null, additonalData = null } = {}) => {
+	return { action, model, objectParams, body, errClass, additonalData };
 };
-
 export const checkItem = async ({ action, model, objectParams, body, errClass }) => {
 	const item =
 		action === "get"
 			? await model.findOne(objectParams)
 			: action === "update"
-			? await model.findOneAndUpdate(objectParams, body, { new: true, runValidators: true, context: "query" })
+			? await model.findOneAndUpdate(objectParams, body, {
+					new: true,
+					runValidators: true,
+					context: "query",
+			  })
 			: await model.findOneAndDelete(objectParams);
 
 	if (!isExistsObjectParams(objectParams) || !item) throw errClass;
 
 	return item;
 };
-
-const isExistsObjectParams = (objectParams) => {
+const isExistsObjectParams = (queries) => {
 	let isExists = true;
 
-	for (let key in objectParams) {
-		if (objectParams[key] === null || objectParams[key] === undefined) isExists = false;
+	for (let key in queries) {
+		if (queries[key] === null || queries[key] === undefined) isExists = false;
+	}
+
+	return isExists;
+};
+
+export const modelAction = async ({ model, action, queries, errClass, data, additonalData }) => {
+	let result;
+	const options = { additonalData };
+
+	switch (action) {
+		case "get":
+			result = await model.findOne(queries, options);
+			break;
+		case "create":
+			result = await model.create(data);
+			break;
+		case "update":
+			result = await model.findOneAndUpdate(queries, data, { ...options, new: true, runValidators: true, context: "query" });
+			break;
+		case "delete":
+			result = await model.findOneAndDelete(queries, options);
+			break;
+		default:
+			throw new CustomError("Action for model not available", StatusCodes.INTERNAL_SERVER_ERROR);
+	}
+
+	if (action !== "create") {
+		if (!isExistsQueries(queries) || !result) throw errClass;
+	}
+
+	return result;
+};
+
+const isExistsQueries = (queries) => {
+	let isExists = true;
+
+	for (let key in queries) {
+		if (queries[key] === null || queries[key] === undefined) isExists = false;
 	}
 
 	return isExists;
@@ -100,8 +142,8 @@ export const checkPassword = async (user, password, errClass) => {
 	if (!isCorrectPassword) throw errClass;
 };
 
-export const checkPermission = (currentUser, resourceUserId, canAdminAccessThiss = false) => {
-	if (canAdminAccessThiss) {
+export const checkPermission = (currentUser, resourceUserId, canAdminAccessThis = false) => {
+	if (canAdminAccessThis) {
 		if (currentUser.role === "admin") return;
 	}
 
