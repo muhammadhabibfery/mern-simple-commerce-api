@@ -1,12 +1,16 @@
 import ValidationError from "../../errors/validationError.js";
 
-const schemaConfig = { abortEarly: false, allowUnknown: true };
-
-const validate = async (schema, body, file = null, async = false) => {
+const validate = async (
+	schema,
+	body,
+	async = false,
+	{ files = null, context = null } = {}
+) => {
+	const schemaConfig = { abortEarly: false, allowUnknown: true, context };
 	const schemaKeys = Object.keys(schema.describe().keys);
 	let data = { ...body };
 
-	if (file) data = { ...data, ...file };
+	if (files) data = { ...data, ...files };
 
 	const result = async
 		? await schema.validateAsync(data, schemaConfig)
