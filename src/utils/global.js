@@ -2,6 +2,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { operatorFilterProperties } from "../config/global.js";
 import { clearCookie, setCookie } from "../config/cookie.js";
+import UnauthorizedError from "../errors/UnauthorizedError.js";
 
 export const wrapResponse = (res, code, message, records, errors) => {
 	let responseData = { code, message };
@@ -116,4 +117,16 @@ export const convertToSlug = (value) => {
 export const checkPassword = async (user, password, errClass) => {
 	const isCorrectPassword = await user.checkPassword(password);
 	if (!isCorrectPassword) throw errClass;
+};
+
+export const checkPermission = (
+	currentUser,
+	resourceUserId,
+	canAdminAccessThiss = false
+) => {
+	if (canAdminAccessThiss) if (currentUser.role === "admin") return;
+
+	if (currentUser.id === resourceUserId.toString()) return;
+
+	throw new UnauthorizedError("Unauthorized");
 };
