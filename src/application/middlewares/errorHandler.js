@@ -18,11 +18,18 @@ const errorHandler = (err, req, res, next) => {
 		errors = filterErrorsPropertiesFromMongooseValidation(err);
 	}
 	if (err instanceof NotFoundError || err?.name === "CastError") {
-		status =
-			err?.code || err.path === "_id" ? StatusCodes.NOT_FOUND : status;
+		status = err.path === "_id" ? StatusCodes.NOT_FOUND : status;
 		if (err?.path === "_id" && err?.kind === "ObjectId") {
 			message = message.match(/for model "([^"]+)"/);
 			message = message ? `${message[1]} not found` : null;
+		}
+		if (
+			err?.path !== "_id" &&
+			err?.path !== "user" &&
+			err?.kind === "ObjectId"
+		) {
+			message = message.match(/at path "([^"]+)"/);
+			message = message ? `Invalid ${message[1]} value` : null;
 		}
 	}
 
