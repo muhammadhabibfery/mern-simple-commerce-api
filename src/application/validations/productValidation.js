@@ -1,40 +1,36 @@
 import Joi from "joi";
-import Product from "../models/productModel.js";
-import { convertToSlug } from "../../utils/global.js";
+import Category from "../models/categoryModel.js";
 import ValidationError from "../../errors/validationError.js";
 
 const availableImageTypes = ["jpg", "png"];
 
 export const productValidation = Joi.object({
-	name: Joi.string()
-		.min(3)
-		.max(100)
-		.required()
-		.external(async (value) => {
-			const slug = convertToSlug(value);
-			const duplicateProduct = await Product.findOne({ slug });
-			if (duplicateProduct)
-				throw new ValidationError(`"name" has been created`);
-			return value;
-		}),
-	price: Joi.number().min(1).required(),
+	name: Joi.string().min(3).max(100).required(),
+	description: Joi.string().min(3).max(1000).required(),
+	price: Joi.number().min(0).optional(),
+	stock: Joi.number().min(0).optional(),
+	colors: Joi.array().optional(),
+	featured: Joi.bool().optional(),
+	freeShipping: Joi.bool().optional(),
+	category: Joi.required().external(async (value) => {
+		const existsCategory = await Category.findById(value);
+		if (!existsCategory) throw new ValidationError(`"category" not found`);
+		return value;
+	}),
 	image: Joi.required()
 		.custom((value, helpers) => {
 			if (!value) return helpers.error("any.required");
 			if (value.size > 1 * 1000000) return helpers.error("any.size");
-			if (!value.mimetype.startsWith("image"))
-				return helpers.error("any.mimetype");
-			if (!availableImageTypes.includes(value.name.split(".").at(-1)))
-				return helpers.error("any.imagetype");
+			if (!value.mimetype.startsWith("image")) return helpers.error("any.mimetype");
+			if (!availableImageTypes.includes(value.name.split(".").at(-1))) return helpers.error("any.imagetype");
 
+			value = { ...value, name: value.name.replaceAll("/", "") };
 			return value;
 		})
 		.message({
 			"any.size": `"image" is not allowed to be empty`,
 			"any.size": `"image" size must be less than 1 MB`,
 			"any.mimetype": `"image" must be an image type`,
-			"any.imagetype": `"image" must in ${availableImageTypes.join(
-				"/"
-			)} type`,
+			"any.imagetype": `"image" must in ${availableImageTypes.join("/")} type`,
 		}),
 });
