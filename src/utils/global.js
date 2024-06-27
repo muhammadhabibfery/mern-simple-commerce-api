@@ -41,9 +41,7 @@ export const wrapData = (data, total, keyword) => {
 };
 
 export const attachCookies = (res, user, set = true) => {
-	set
-		? res.cookie("refreshToken", user.createToken(), setCookie)
-		: res.cookie("refreshToken", "", clearCookie);
+	set ? res.cookie("refreshToken", user.createToken(), setCookie) : res.cookie("refreshToken", "", clearCookie);
 };
 
 export const convertOperatorFilters = (keyword, propertyList, regEx) => {
@@ -55,39 +53,22 @@ export const convertOperatorFilters = (keyword, propertyList, regEx) => {
 		.forEach((item) => {
 			const [property, operator, value] = item.split("*");
 
-			if (propertyList.includes(property))
-				result[property] = { [operator]: Number(value) };
+			if (propertyList.includes(property)) result[property] = { [operator]: Number(value) };
 		});
 
 	return Object.keys(result).length > 0 ? result : undefined;
 };
 
-export const setParams = (
-	action,
-	model,
-	objectParams,
-	errClass,
-	body = null
-) => {
+export const setParams = (action, model, objectParams, errClass, body = null) => {
 	return { action, model, objectParams, body, errClass };
 };
 
-export const checkItem = async ({
-	action,
-	model,
-	objectParams,
-	body,
-	errClass,
-}) => {
+export const checkItem = async ({ action, model, objectParams, body, errClass }) => {
 	const item =
 		action === "get"
 			? await model.findOne(objectParams)
 			: action === "update"
-			? await model.findOneAndUpdate(objectParams, body, {
-					new: true,
-					runValidators: true,
-					context: "query",
-			  })
+			? await model.findOneAndUpdate(objectParams, body, { new: true, runValidators: true, context: "query" })
 			: await model.findOneAndDelete(objectParams);
 
 	if (!isExistsObjectParams(objectParams) || !item) throw errClass;
@@ -98,9 +79,9 @@ export const checkItem = async ({
 const isExistsObjectParams = (objectParams) => {
 	let isExists = true;
 
-	for (let key in objectParams)
-		if (objectParams[key] === null || objectParams[key] === undefined)
-			isExists = false;
+	for (let key in objectParams) {
+		if (objectParams[key] === null || objectParams[key] === undefined) isExists = false;
+	}
 
 	return isExists;
 };
@@ -119,12 +100,10 @@ export const checkPassword = async (user, password, errClass) => {
 	if (!isCorrectPassword) throw errClass;
 };
 
-export const checkPermission = (
-	currentUser,
-	resourceUserId,
-	canAdminAccessThiss = false
-) => {
-	if (canAdminAccessThiss) if (currentUser.role === "admin") return;
+export const checkPermission = (currentUser, resourceUserId, canAdminAccessThiss = false) => {
+	if (canAdminAccessThiss) {
+		if (currentUser.role === "admin") return;
+	}
 
 	if (currentUser.id === resourceUserId.toString()) return;
 
