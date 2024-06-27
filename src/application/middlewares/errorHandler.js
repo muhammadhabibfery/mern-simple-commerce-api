@@ -28,6 +28,7 @@ const errorHandler = (err, req, res, next) => {
 			err?.path !== "user" &&
 			err?.kind === "ObjectId"
 		) {
+			status = StatusCodes.BAD_REQUEST;
 			message = message.match(/at path "([^"]+)"/);
 			message = message ? `Invalid ${message[1]} value` : null;
 		}
