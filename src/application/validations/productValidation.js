@@ -1,6 +1,7 @@
 import Joi from "joi";
 import Category from "../models/categoryModel.js";
 import ValidationError from "../../errors/validationError.js";
+import { modelAction } from "../../utils/global.js";
 
 const availableImageTypes = ["jpg", "png"];
 
@@ -13,8 +14,12 @@ export const productValidation = Joi.object({
 	featured: Joi.bool().optional(),
 	freeShipping: Joi.bool().optional(),
 	category: Joi.required().external(async (value) => {
-		const existsCategory = await Category.findById(value);
-		if (!existsCategory) throw new ValidationError(`"category" not found`);
+		await modelAction({
+			model: Category,
+			action: "get",
+			queries: { _id: value },
+			errClass: new ValidationError(`"category" not found`),
+		});
 		return value;
 	}),
 	image: Joi.required()
