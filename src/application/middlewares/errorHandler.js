@@ -23,11 +23,7 @@ const errorHandler = (err, req, res, next) => {
 			message = message.match(/for model "([^"]+)"/);
 			message = message ? `${message[1]} not found` : null;
 		}
-		if (
-			err?.path !== "_id" &&
-			err?.path !== "user" &&
-			err?.kind === "ObjectId"
-		) {
+		if (err?.path !== "_id" && err?.path !== "user" && err?.kind === "ObjectId") {
 			status = StatusCodes.BAD_REQUEST;
 			message = message.match(/at path "([^"]+)"/);
 			message = message ? `Invalid ${message[1]} value` : null;
@@ -42,9 +38,9 @@ const filterErrorsPropertiesFromMongooseValidation = (err) => {
 
 	if (errors)
 		for (let key in errors) {
-			if (typeof errors[key] === "object")
-				if ("message" in errors[key])
-					errors[key] = errors[key]["message"];
+			if (typeof errors[key] === "object") {
+				if ("message" in errors[key]) errors[key] = errors[key]["message"];
+			}
 
 			return errors;
 		}
@@ -62,10 +58,7 @@ const filterErrorsPropertiesFromJoiValidation = (errors) => {
 	while ((match = regex.exec(errors)) !== null) {
 		const [, key, value] = match;
 		const property = `${key.slice(0, 1).toUpperCase()}${key.slice(1)}`;
-		result[key.toLowerCase()] = `${property.replaceAll(
-			"_",
-			" "
-		)} ${value.trim()}`;
+		result[key.toLowerCase()] = `${property.replaceAll("_", " ")} ${value.trim()}`;
 	}
 
 	return result;
