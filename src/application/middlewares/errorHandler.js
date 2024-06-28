@@ -4,6 +4,8 @@ import { wrapResponse } from "../../utils/global.js";
 import ValidationError from "../../errors/validationError.js";
 
 const errorHandler = (err, req, res, next) => {
+	// console.log(err);
+	// return res.json({ err });
 	let status = err?.code || StatusCodes.INTERNAL_SERVER_ERROR;
 	let message = err?.message;
 	let errors = undefined;
@@ -13,6 +15,7 @@ const errorHandler = (err, req, res, next) => {
 		errors = filterErrorsPropertiesFromJoiValidation(err.message);
 	}
 	if (err?.name === "ValidationError") {
+		console.log("disini");
 		status = StatusCodes.UNPROCESSABLE_ENTITY;
 		message = err.name;
 		errors = filterErrorsPropertiesFromMongooseValidation(err);
@@ -35,14 +38,15 @@ const errorHandler = (err, req, res, next) => {
 
 const filterErrorsPropertiesFromMongooseValidation = (err) => {
 	let errors = err?.errors;
+	let errorResult;
 
 	if (errors)
 		for (let key in errors) {
 			if (typeof errors[key] === "object") {
 				if ("message" in errors[key]) errors[key] = errors[key]["message"];
+			} else {
+				return errors;
 			}
-
-			return errors;
 		}
 	else errors = filterErrorsPropertiesFromJoiValidation(err.message);
 
