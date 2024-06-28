@@ -3,6 +3,22 @@ import uniqueValidator from "mongoose-unique-validator";
 import FileHandler from "../../utils/fileHandler.js";
 import { dirName } from "../../utils/global.js";
 
+export const availableProductFields = [
+	"id",
+	"name",
+	"slug",
+	"description",
+	"price",
+	"stock",
+	"image",
+	"colors",
+	"featured",
+	"freeShipping",
+	"averageRating",
+	"numberOfReviews",
+	"category",
+];
+
 const productSchema = mongoose.Schema(
 	{
 		name: {

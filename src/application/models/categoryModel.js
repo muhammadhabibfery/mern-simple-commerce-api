@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
 
+export const availableCategoryFields = ["name", "slug"];
+
 const categorySchema = mongoose.Schema(
 	{
 		name: {

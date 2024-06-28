@@ -1,5 +1,7 @@
 import NotFoundError from "../../errors/notFoundError.js";
 import { modelAction, wrapData } from "../../utils/global.js";
+import { availableCategoryFields } from "../models/categoryModel.js";
+import { availableProductFields } from "../models/productModel.js";
 import Review from "../models/reviewModel.js";
 import { reviewValidation } from "../validations/reviewValidation.js";
 import validate from "../validations/validate.js";
@@ -10,7 +12,11 @@ const index = async ({ query }) => {
 	const { page, size, skip } = query;
 	const sortList = "-createdAt -_id";
 
-	const reviews = await Review.find({}).sort(sortList).skip(skip).limit(size);
+	const reviews = await Review.find({})
+		.populate({ path: "product", select: availableProductFields, populate: { path: "category", select: availableCategoryFields } })
+		.sort(sortList)
+		.skip(skip)
+		.limit(size);
 	const totalReviews = await Review.countDocuments({});
 	return wrapData(reviews, totalReviews, { page, size });
 };
