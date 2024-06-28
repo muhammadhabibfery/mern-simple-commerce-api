@@ -44,4 +44,20 @@ reviewSchema.pre(["findOneAndUpdate", "findOneAndDelete"], async function () {
 	}
 });
 
+reviewSchema.post(["save", "findOneAndUpdate", "findOneAndDelete"], async function (doc) {
+	if (doc) {
+		const aggregateData = [
+			{ $match: { product: doc.product } },
+			{ $group: { _id: "$product", averageRating: { $avg: "$rating" }, numberOfReviews: { $sum: 1 } } },
+		];
+
+		const result =
+			this instanceof mongoose.Query ? await this.model.aggregate(aggregateData) : await this.constructor.aggregate(aggregateData);
+
+		const data = { averageRating: Math.ceil(result[0]?.averageRating || 0), numberOfReviews: result[0]?.numberOfReviews || 0 };
+
+		await doc.$model("Product").findOneAndUpdate({ _id: doc.product }, data);
+	}
+});
+
 export default mongoose.model("Review", reviewSchema);
