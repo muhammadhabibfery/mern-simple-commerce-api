@@ -36,7 +36,6 @@ const errorHandler = (err, req, res, next) => {
 
 const filterErrorsPropertiesFromMongooseValidation = (err) => {
 	let errors = err?.errors;
-	let errorResult;
 
 	if (errors)
 		for (let key in errors) {
