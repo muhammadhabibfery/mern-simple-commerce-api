@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 export const userRoles = ["admin", "user"];
 
-const availableUserFields = ["id", "name", "email", "role"];
+export const availableUserFields = ["id", "name", "email", "role"];
 
 const userSchema = mongoose.Schema(
 	{
@@ -47,10 +47,7 @@ userSchema.index({ name: -1, email: -1 });
 userSchema.plugin(uniqueValidator, { message: "{PATH} has been registered" });
 
 async function hashPassword() {
-	const doc =
-		this instanceof mongoose.Query
-			? await this.model.findOne(this.getQuery())
-			: this;
+	const doc = this instanceof mongoose.Query ? await this.model.findOne(this.getQuery()) : this;
 
 	if (!doc.isModified("password")) return;
 
@@ -61,19 +58,13 @@ async function hashPassword() {
 userSchema.pre("save", hashPassword);
 userSchema.pre("findOneAndUpdate", hashPassword);
 
-userSchema.post("find", function (docs) {
-	let result = docs.map((doc) => {
-		return doc.self();
-	});
+userSchema.methods.toJSON = function () {
+	const userObject = this.toObject();
 
-	return mongoose.overwriteMiddlewareResult(result);
-});
-
-userSchema.methods.self = function () {
 	let result = {};
 	availableUserFields.forEach((item) => {
-		if (item === "id") result[item] = this._id;
-		else result[item] = this[item];
+		if (item === "id") result[item] = userObject._id;
+		else result[item] = userObject[item];
 	});
 
 	return result;
@@ -85,7 +76,7 @@ userSchema.methods.checkPassword = async function (password) {
 
 userSchema.methods.createToken = function () {
 	const { JWT_SECRET_KEY, JWT_LIFETIME } = process.env;
-	const { id, role } = this.self();
+	const { id, role } = this;
 	return jwt.sign({ id, role }, JWT_SECRET_KEY, { expiresIn: JWT_LIFETIME });
 };
 

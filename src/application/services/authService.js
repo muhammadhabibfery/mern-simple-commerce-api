@@ -27,7 +27,7 @@ const login = async (body) => {
 		errClass: new UnauthenticatedError(errorMessage),
 	});
 	await checkPassword(user, password, new UnauthenticatedError(errorMessage));
-	return { data: user.self(), user };
+	return { data: user, user };
 };
 
 const logout = async (userId) => {
