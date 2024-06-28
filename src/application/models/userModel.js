@@ -55,8 +55,7 @@ async function hashPassword() {
 	doc.password = await bcrypt.hash(doc.password, salt);
 }
 
-userSchema.pre("save", hashPassword);
-userSchema.pre("findOneAndUpdate", hashPassword);
+userSchema.pre(["save", "findOneAndUpdate"], hashPassword);
 
 userSchema.methods.toJSON = function () {
 	const userObject = this.toObject();
