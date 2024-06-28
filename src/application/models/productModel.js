@@ -51,7 +51,7 @@ const productSchema = mongoose.Schema(
 		},
 		colors: {
 			type: [String],
-			default: null,
+			default: ["white"],
 		},
 		featured: {
 			type: Boolean,

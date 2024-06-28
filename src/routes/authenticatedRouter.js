@@ -5,6 +5,7 @@ import profileRouter from "./api-segment/profileRouter.js";
 import categoryRouter from "./api-segment/categoryRouter.js";
 import { productRouter } from "./api-segment/productRouter.js";
 import { reviewRouter } from "./api-segment/reviewRouter.js";
+import { adminOrderRouter, orderRouter } from "./api-segment/orderRouter.js";
 
 const authenticatedApiRouter = express.Router();
 
@@ -14,5 +15,6 @@ authenticatedApiRouter.use("/profile", profileRouter);
 authenticatedApiRouter.use("/categories", categoryRouter);
 authenticatedApiRouter.use("/products/admin", productRouter);
 authenticatedApiRouter.use("/reviews", reviewRouter);
+authenticatedApiRouter.use("/orders", adminOrderRouter, orderRouter);
 
 export default authenticatedApiRouter;
