@@ -4,8 +4,6 @@ import { wrapResponse } from "../../utils/global.js";
 import ValidationError from "../../errors/validationError.js";
 
 const errorHandler = (err, req, res, next) => {
-	// console.log(err);
-	// return res.json({ err });
 	let status = err?.code || StatusCodes.INTERNAL_SERVER_ERROR;
 	let message = err?.message;
 	let errors = undefined;
