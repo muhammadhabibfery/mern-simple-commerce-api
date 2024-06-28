@@ -83,11 +83,17 @@ const productSchema = mongoose.Schema(
 			default: null,
 		},
 	},
-	{ timestamps: true }
+	{ timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 productSchema.index({ slug: -1 });
 productSchema.plugin(uniqueValidator, { message: "Name has been created" });
+
+productSchema.virtual("reviews", {
+	ref: "Review",
+	localField: "_id",
+	foreignField: "product",
+});
 
 productSchema.post("findOneAndDelete", async function (doc) {
 	await FileHandler.remove(dirName(import.meta.url), `../../../public/${doc?.image}`);

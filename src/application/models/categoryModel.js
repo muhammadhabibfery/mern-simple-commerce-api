@@ -23,12 +23,18 @@ const categorySchema = mongoose.Schema(
 			default: null,
 		},
 	},
-	{ timestamps: true }
+	{ timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 categorySchema.index({ name: -1, slug: -1 });
 categorySchema.plugin(uniqueValidator, {
 	message: "Name has been registered",
+});
+
+categorySchema.virtual("products", {
+	ref: "Product",
+	localField: "_id",
+	foreignField: "category",
 });
 
 export default mongoose.model("Category", categorySchema);

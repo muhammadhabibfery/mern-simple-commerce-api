@@ -6,6 +6,7 @@ import { productValidation } from "../validations/productValidation.js";
 import validate from "../validations/validate.js";
 import FileHandler from "../../utils/fileHandler.js";
 import { availableCategoryFields } from "../models/categoryModel.js";
+import { availableReviewFields } from "../models/reviewModel.js";
 
 const notFoundErrMessage = "Product not found";
 const imageDirectory = "products";
@@ -26,6 +27,7 @@ const index = async ({ query }) => {
 
 	const products = await Product.find(queryObject)
 		.populate({ path: "category", select: availableCategoryFields })
+		.populate({ path: "reviews", select: availableReviewFields })
 		.sort(sortList)
 		.skip(skip)
 		.limit(size);

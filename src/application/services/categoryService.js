@@ -1,6 +1,7 @@
 import NotFoundError from "../../errors/notFoundError.js";
 import { convertToSlug, modelAction, wrapData } from "../../utils/global.js";
 import Category from "../models/categoryModel.js";
+import { availableProductFields } from "../models/productModel.js";
 import { categoryValidation } from "../validations/categoryValidation.js";
 import validate from "../validations/validate.js";
 
@@ -13,7 +14,11 @@ const index = async ({ query }) => {
 
 	if (search) queryObject.name = { $regex: search, $options: "i" };
 
-	const categories = await Category.find(queryObject).sort(sortList).skip(skip).limit(size);
+	const categories = await Category.find(queryObject)
+		.populate({ path: "products", select: availableProductFields })
+		.sort(sortList)
+		.skip(skip)
+		.limit(size);
 	const totalCategories = await Category.countDocuments(queryObject);
 
 	return wrapData(categories, totalCategories, { page, size });
