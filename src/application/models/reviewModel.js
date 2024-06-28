@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
 import { checkPermission } from "../../utils/global.js";
 
+export const availableReviewFields = ["title", "comment", "rating"];
+
 const reviewSchema = mongoose.Schema(
 	{
 		title: {
@@ -20,11 +22,11 @@ const reviewSchema = mongoose.Schema(
 			max: 5,
 		},
 		user: {
-			type: mongoose.Schema.ObjectId,
+			type: mongoose.Types.ObjectId,
 			ref: "User",
 		},
 		product: {
-			type: mongoose.Schema.ObjectId,
+			type: mongoose.Types.ObjectId,
 			ref: "Product",
 		},
 	},

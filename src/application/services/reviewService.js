@@ -3,6 +3,7 @@ import { modelAction, wrapData } from "../../utils/global.js";
 import { availableCategoryFields } from "../models/categoryModel.js";
 import { availableProductFields } from "../models/productModel.js";
 import Review from "../models/reviewModel.js";
+import { availableUserFields } from "../models/userModel.js";
 import { reviewValidation } from "../validations/reviewValidation.js";
 import validate from "../validations/validate.js";
 
@@ -13,6 +14,7 @@ const index = async ({ query }) => {
 	const sortList = "-createdAt -_id";
 
 	const reviews = await Review.find({})
+		.populate({ path: "user", select: availableUserFields })
 		.populate({ path: "product", select: availableProductFields, populate: { path: "category", select: availableCategoryFields } })
 		.sort(sortList)
 		.skip(skip)
