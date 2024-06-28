@@ -99,4 +99,9 @@ productSchema.post("findOneAndDelete", async function (doc) {
 	await FileHandler.remove(dirName(import.meta.url), `../../../public/${doc?.image}`);
 });
 
+productSchema.pre("findOneAndDelete", async function () {
+	const doc = await this.model.findOne(this.getQuery());
+	if (doc) await doc.$model("Review").deleteMany({ product: doc._id });
+});
+
 export default mongoose.model("Product", productSchema);
