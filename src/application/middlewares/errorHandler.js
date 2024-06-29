@@ -13,7 +13,6 @@ const errorHandler = (err, req, res, next) => {
 		errors = filterErrorsPropertiesFromJoiValidation(err.message);
 	}
 	if (err?.name === "ValidationError") {
-		console.log("disini");
 		status = StatusCodes.UNPROCESSABLE_ENTITY;
 		message = err.name;
 		errors = filterErrorsPropertiesFromMongooseValidation(err);
