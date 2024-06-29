@@ -10,7 +10,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
 	const { data, user } = await AuthService.login(req.body);
 	attachCookies(res, user);
-	return wrapResponse(res, StatusCodes.OK, "Login successfully", { data });
+	return wrapResponse(res, StatusCodes.OK, "Login successfully", data);
 };
 
 const logout = async (req, res) => {

@@ -17,15 +17,14 @@ const register = async (body) => {
 const login = async (body) => {
 	const errorMessage = "Invalid credential";
 	const { email, password } = await validate(loginValidation, body);
-	// const params = setParams("get", User, { email }, new UnauthenticatedError(errorMessage));
 
-	// const user = await checkItem(params);
 	const user = await modelAction({
 		model: User,
 		action: "get",
 		queries: { email },
 		errClass: new UnauthenticatedError(errorMessage),
 	});
+
 	await checkPassword(user, password, new UnauthenticatedError(errorMessage));
 	return { data: user, user };
 };
