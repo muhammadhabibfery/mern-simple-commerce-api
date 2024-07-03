@@ -20,7 +20,7 @@ export const createOrderValidation = Joi.object({
 					errClass: new ValidationError(helpers.message(`{{ #label }} ${item.name} not found`)),
 				});
 				const productItem = isMatchProduct(item, product, helpers);
-				productItems = [...productItems, isMatchProduct(productItem, product, helpers)];
+				productItems = [...productItems, productItem];
 			}
 
 			return productItems;
