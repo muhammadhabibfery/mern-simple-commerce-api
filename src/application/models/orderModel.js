@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export const orderStatusEnum = ["pending", "failed", "paid", "delivered", "canceled"];
 
-const cartItem = mongoose.Schema({
+const orderItem = mongoose.Schema({
 	name: {
 		type: String,
 	},
@@ -35,8 +35,8 @@ const orderSchema = mongoose.Schema(
 		total: {
 			type: Number,
 		},
-		cartItems: {
-			type: [cartItem],
+		orderItems: {
+			type: [orderItem],
 		},
 		status: {
 			type: String,

@@ -13,17 +13,13 @@ const getUserOrders = async (req, res) => {
 };
 
 const create = async (req, res) => {
-	await OrderService.create(req);
-	return wrapResponse(res, StatusCodes.OK, "Order created successfully");
+	const result = await OrderService.create(req);
+	return wrapResponse(res, StatusCodes.CREATED, "Order created successfully", result);
 };
 
 const update = async (req, res) => {
-	await OrderService.update(req);
-	return wrapResponse(res, StatusCodes.OK, "", "Order updated successfully");
-};
-const remove = async (req, res) => {
-	await OrderService.remove(req);
-	return wrapResponse(res, StatusCodes.OK, "", "Order deleted successfully");
+	const result = await OrderService.update(req);
+	return wrapResponse(res, StatusCodes.OK, "Order updated successfully", result);
 };
 
-export default { getAllOrders, getUserOrders, create, update, remove };
+export default { getAllOrders, getUserOrders, create, update };
