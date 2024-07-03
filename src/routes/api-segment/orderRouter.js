@@ -8,4 +8,4 @@ export const orderRouter = express.Router();
 adminOrderRouter.get("/admin", userRoleAuthorizationHandler("admin"), OrderController.getAllOrders);
 
 orderRouter.route("/").get(OrderController.getUserOrders).post(OrderController.create);
-orderRouter.route("/:id").put(OrderController.update).delete(OrderController.remove);
+orderRouter.route("/:id").put(OrderController.update);
