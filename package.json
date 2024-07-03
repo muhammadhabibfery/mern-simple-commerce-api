@@ -29,6 +29,7 @@
 		"jsonwebtoken": "^9.0.2",
 		"mongoose": "^8.3.5",
 		"mongoose-unique-validator": "^5.0.0",
-		"rate-limiter": "^0.2.0"
+		"rate-limiter": "^0.2.0",
+		"stripe": "^16.1.0"
 	}
 }
