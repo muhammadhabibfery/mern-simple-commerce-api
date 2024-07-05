@@ -5,6 +5,7 @@ import User from "../models/userModel.js";
 import { loginValidation, registerValidation, verificationValidation } from "../validations/authValidation.js";
 import validate from "../validations/validate.js";
 import Email from "../emails/index.js";
+import Token from "../models/tokenModel.js";
 
 const register = async (req) => {
 	let data = await validate(registerValidation, req.body);
@@ -35,9 +36,9 @@ const verify = async ({ body }) => {
 	});
 };
 
-const login = async (body) => {
+const login = async (req) => {
 	const errorMessage = "Invalid credential";
-	const { email, password } = await validate(loginValidation, body);
+	const { email, password } = await validate(loginValidation, req.body);
 
 	const user = await modelAction({
 		model: User,
@@ -47,7 +48,24 @@ const login = async (body) => {
 	});
 
 	await checkPassword(user, password, new UnauthenticatedError(errorMessage));
-	return { data: user, user };
+	if (!user.verifiedAt) throw new UnauthenticatedError("Please check your email to verify the account");
+
+	const existingRefreshToken = await Token.findOne({ user: user._id });
+	let refreshToken;
+
+	if (existingRefreshToken) {
+		refreshToken = existingRefreshToken.refreshToken;
+	} else {
+		refreshToken = crypto.randomBytes(50).toString("hex");
+		const tokenData = { refreshToken, ip: req.ip, userAgent: req.get("user-agent"), user: user._id };
+		await modelAction({
+			model: Token,
+			action: "create",
+			data: tokenData,
+		});
+	}
+
+	return { data: user, refreshToken };
 };
 
 const logout = async (userId) => {

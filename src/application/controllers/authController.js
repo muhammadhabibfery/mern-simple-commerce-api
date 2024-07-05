@@ -13,8 +13,8 @@ const verify = async (req, res) => {
 };
 
 const login = async (req, res) => {
-	const { data, user } = await AuthService.login(req.body);
-	attachCookies(res, user);
+	const { data, refreshToken } = await AuthService.login(req);
+	attachCookies({ res, user: data.user, refreshToken });
 	return wrapResponse(res, StatusCodes.OK, "Login successfully", data);
 };
 
