@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import UnauthenticatedError from "../../errors/unauthenticatedError.js";
 import Token from "../models/tokenModel.js";
 import User from "../models/userModel.js";
+import { attachCookies, modelAction } from "../../utils/global.js";
 
 const authenticationHandler = async (req, res, next) => {
 	const unauthenticatedMessage = "Unauthenticated";
