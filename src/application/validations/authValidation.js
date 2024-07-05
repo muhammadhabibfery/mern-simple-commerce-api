@@ -34,3 +34,19 @@ export const verificationValidation = Joi.object({
 			return value;
 		}),
 });
+
+export const forgotPasswordValidation = Joi.object({
+	email: Joi.string()
+		.email()
+		.required()
+		.external(async (value, helpers) => {
+			await modelAction({
+				model: User,
+				action: "get",
+				queries: { email: value },
+				errClass: new ValidationError(helpers.message("{{ #label }} not available")),
+			});
+
+			return value;
+		}),
+});

@@ -2,10 +2,12 @@ import crypto from "crypto";
 import UnauthenticatedError from "../../errors/unauthenticatedError.js";
 import { checkPassword, modelAction } from "../../utils/global.js";
 import User from "../models/userModel.js";
-import { loginValidation, registerValidation, verificationValidation } from "../validations/authValidation.js";
+import { forgotPasswordValidation, loginValidation, registerValidation, verificationValidation } from "../validations/authValidation.js";
 import validate from "../validations/validate.js";
 import Email from "../emails/index.js";
 import Token from "../models/tokenModel.js";
+import { passwordTokenExpiration } from "../../config/global.js";
+import NotFoundError from "../../errors/notFoundError.js";
 
 const register = async (req) => {
 	let data = await validate(registerValidation, req.body);
@@ -68,9 +70,28 @@ const login = async (req) => {
 	return { data: user, refreshToken };
 };
 
+const forgotPassword = async (req) => {
+	const { email } = await validate(forgotPasswordValidation, req.body, true);
+	const passwordToken = crypto.randomBytes(50).toString("hex");
+	const passwordTokenExpired = new Date(Date.now() + passwordTokenExpiration);
+
+	await modelAction({
+		model: User,
+		action: "update",
+		queries: { email },
+		errClass: new NotFoundError("Email not available"),
+		data: { passwordToken, passwordTokenExpired },
+	});
+
+	Email.resetPassword({
+		address: email,
+		data: { token: passwordToken, origin: req },
+	});
+};
+
 const logout = async (req) => {
 	const user = await User.findOne({ _id: req.user.id });
 	await Token.deleteMany({ user: user._id });
 };
 
-export default { register, login, logout, verify };
+export default { register, login, logout, verify, forgotPassword };

@@ -18,10 +18,15 @@ const login = async (req, res) => {
 	return wrapResponse(res, StatusCodes.OK, "Login successfully", data);
 };
 
+const forgotPassword = async (req, res) => {
+	await AuthService.forgotPassword(req);
+	return wrapResponse(res, StatusCodes.OK, "Email sent, please check your email to reset password");
+};
+
 const logout = async (req, res) => {
 	const user = await AuthService.logout(req);
 	attachCookies({ res, user, set: false });
 	return wrapResponse(res, StatusCodes.OK, "Logout successfully");
 };
 
-export default { register, login, logout, verify };
+export default { register, login, logout, verify, forgotPassword };
