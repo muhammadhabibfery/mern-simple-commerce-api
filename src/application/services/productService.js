@@ -52,7 +52,7 @@ const create = async ({ body, files, user }) => {
 
 const update = async ({ params, body, files, user }) => {
 	let data = await validate(productValidation, body, true, { files });
-	const payload = {
+	let payload = {
 		model: Product,
 		action: "get",
 		queries: { _id: params.id },

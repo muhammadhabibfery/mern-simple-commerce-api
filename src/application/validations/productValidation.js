@@ -33,7 +33,6 @@ export const productValidation = Joi.object({
 			return value;
 		})
 		.message({
-			"any.size": `"image" is not allowed to be empty`,
 			"any.size": `"image" size must be less than 1 MB`,
 			"any.mimetype": `"image" must be an image type`,
 			"any.imagetype": `"image" must in ${availableImageTypes.join("/")} type`,
