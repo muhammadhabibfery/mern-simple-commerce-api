@@ -19,8 +19,8 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-	const user = await AuthService.logout(req.user.id);
-	attachCookies(res, user, false);
+	const user = await AuthService.logout(req);
+	attachCookies({ res, user, set: false });
 	return wrapResponse(res, StatusCodes.OK, "Logout successfully");
 };
 

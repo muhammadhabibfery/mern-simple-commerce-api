@@ -68,8 +68,9 @@ const login = async (req) => {
 	return { data: user, refreshToken };
 };
 
-const logout = async (userId) => {
-	return User.findOne({ _id: userId });
+const logout = async (req) => {
+	const user = await User.findOne({ _id: req.user.id });
+	await Token.deleteMany({ user: user._id });
 };
 
 export default { register, login, logout, verify };
