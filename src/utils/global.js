@@ -42,8 +42,14 @@ export const wrapData = (data, total, keyword) => {
 	};
 };
 
-export const attachCookies = (res, user, set = true) => {
-	set ? res.cookie("refreshToken", user.createToken(), setCookie) : res.cookie("refreshToken", "", clearCookie);
+export const attachCookies = ({ res, user, refreshToken, set = true }) => {
+	if (set) {
+		res.cookie("accessToken", user.createToken(), { ...setCookie, expires: new Date(Date.now() + 1000 * 60 * 60) });
+		res.cookie("refreshToken", user.createToken(refreshToken), { ...setCookie, expires: new Date(Date.now() + 1000 * 60 * 60 * 24) });
+	} else {
+		res.cookie("accessToken", "", clearCookie);
+		res.cookie("refreshToken", "", clearCookie);
+	}
 };
 
 export const convertOperatorFilters = (keyword, propertyList, regEx) => {
