@@ -2,7 +2,13 @@ import crypto from "crypto";
 import UnauthenticatedError from "../../errors/unauthenticatedError.js";
 import { checkPassword, modelAction } from "../../utils/global.js";
 import User from "../models/userModel.js";
-import { forgotPasswordValidation, loginValidation, registerValidation, verificationValidation } from "../validations/authValidation.js";
+import {
+	forgotPasswordValidation,
+	loginValidation,
+	registerValidation,
+	resetPasswordValidation,
+	verificationValidation,
+} from "../validations/authValidation.js";
 import validate from "../validations/validate.js";
 import Email from "../emails/index.js";
 import Token from "../models/tokenModel.js";
@@ -89,9 +95,23 @@ const forgotPassword = async (req) => {
 	});
 };
 
+const resetPassword = async (req) => {
+	const { password, email } = await validate(resetPasswordValidation, req.body, true);
+	const user = await modelAction({
+		model: User,
+		action: "get",
+		queries: { email },
+	});
+
+	user.password = password;
+	user.passwordToken = null;
+	user.passwordTokenExpired = null;
+	await user.save();
+};
+
 const logout = async (req) => {
 	const user = await User.findOne({ _id: req.user.id });
 	await Token.deleteMany({ user: user._id });
 };
 
-export default { register, login, logout, verify, forgotPassword };
+export default { register, login, logout, verify, forgotPassword, resetPassword };
