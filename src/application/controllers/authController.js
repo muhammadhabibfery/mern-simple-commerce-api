@@ -7,6 +7,11 @@ const register = async (req, res) => {
 	return wrapResponse(res, StatusCodes.CREATED, "Register success, please check your email to verify the account");
 };
 
+const verify = async (req, res) => {
+	await AuthService.verify(req);
+	return wrapResponse(res, StatusCodes.OK, "Verification account successfully");
+};
+
 const login = async (req, res) => {
 	const { data, user } = await AuthService.login(req.body);
 	attachCookies(res, user);
@@ -19,4 +24,4 @@ const logout = async (req, res) => {
 	return wrapResponse(res, StatusCodes.OK, "Logout successfully");
 };
 
-export default { register, login, logout };
+export default { register, login, logout, verify };

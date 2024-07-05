@@ -5,6 +5,7 @@ import authenticationHandler from "../../application/middlewares/authenticationH
 const authRouter = express.Router();
 
 authRouter.post("/register", AuthController.register);
+authRouter.post("/verify", AuthController.verify);
 authRouter.post("/login", AuthController.login);
 authRouter.post("/logout", [authenticationHandler], AuthController.logout);
 

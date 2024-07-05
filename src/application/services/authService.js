@@ -2,7 +2,7 @@ import crypto from "crypto";
 import UnauthenticatedError from "../../errors/unauthenticatedError.js";
 import { checkPassword, modelAction } from "../../utils/global.js";
 import User from "../models/userModel.js";
-import { loginValidation, registerValidation } from "../validations/authValidation.js";
+import { loginValidation, registerValidation, verificationValidation } from "../validations/authValidation.js";
 import validate from "../validations/validate.js";
 import Email from "../emails/index.js";
 
@@ -20,6 +20,18 @@ const register = async (req) => {
 	Email.verificationEmail({
 		address: data.email,
 		data: { name: data.name, token: verificationToken, origin: req },
+	});
+};
+
+const verify = async ({ body }) => {
+	const { email } = await validate(verificationValidation, body, true);
+	const data = { verificationToken: null, verifiedAt: Date.now() };
+	await modelAction({
+		model: User,
+		action: "update",
+		queries: { email },
+		errClass: new UnauthenticatedError("Verification failed"),
+		data,
 	});
 };
 
@@ -42,4 +54,4 @@ const logout = async (userId) => {
 	return User.findOne({ _id: userId });
 };
 
-export default { register, login, logout };
+export default { register, login, logout, verify };
