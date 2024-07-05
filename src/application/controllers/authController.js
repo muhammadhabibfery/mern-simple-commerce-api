@@ -14,7 +14,7 @@ const verify = async (req, res) => {
 
 const login = async (req, res) => {
 	const { data, refreshToken } = await AuthService.login(req);
-	attachCookies({ res, user: data.user, refreshToken });
+	attachCookies({ res, user: data, refreshToken });
 	return wrapResponse(res, StatusCodes.OK, "Login successfully", data);
 };
 
