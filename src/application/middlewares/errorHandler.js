@@ -2,6 +2,9 @@ import { StatusCodes } from "http-status-codes";
 import NotFoundError from "../../errors/notFoundError.js";
 import { wrapResponse } from "../../utils/global.js";
 import ValidationError from "../../errors/validationError.js";
+import UnauthenticatedError from "../../errors/unauthenticatedError.js";
+import UnauthorizedError from "../../errors/UnauthorizedError.js";
+import BadRequestError from "../../errors/badRequestError.js";
 
 const errorHandler = (err, req, res, next) => {
 	let status = err?.code || StatusCodes.INTERNAL_SERVER_ERROR;
@@ -28,6 +31,9 @@ const errorHandler = (err, req, res, next) => {
 			message = message.match(/at path "([^"]+)"/);
 			message = message ? `Invalid ${message[1]} value` : null;
 		}
+	}
+	if (err instanceof UnauthenticatedError || err instanceof UnauthorizedError || err instanceof BadRequestError) {
+		message = message.split(" (")[0];
 	}
 
 	return wrapResponse(res, status, message, null, errors);
