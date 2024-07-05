@@ -29,6 +29,22 @@ const userSchema = mongoose.Schema(
 			enum: userRoles,
 			default: userRoles[1],
 		},
+		verificationToken: {
+			type: String,
+			default: null,
+		},
+		verifiedAt: {
+			type: Date,
+			default: null,
+		},
+		passwordToken: {
+			type: String,
+			default: null,
+		},
+		passwordTokenExpired: {
+			type: Date,
+			default: null,
+		},
 		createdBy: {
 			type: mongoose.Types.ObjectId,
 			ref: "User",
@@ -73,10 +89,11 @@ userSchema.methods.checkPassword = async function (password) {
 	return bcrypt.compare(password, this.password);
 };
 
-userSchema.methods.createToken = function () {
-	const { JWT_SECRET_KEY, JWT_LIFETIME } = process.env;
-	const { id, role } = this;
-	return jwt.sign({ id, role }, JWT_SECRET_KEY, { expiresIn: JWT_LIFETIME });
+userSchema.methods.createToken = function (refreshToken = null) {
+	let payload = { id: this.id, role: this.role };
+	if (refreshToken) payload = { ...payload, refreshToken };
+	const { JWT_SECRET_KEY } = process.env;
+	return jwt.sign(payload, JWT_SECRET_KEY);
 };
 
 export default mongoose.model("User", userSchema);
