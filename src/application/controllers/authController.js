@@ -3,8 +3,8 @@ import { attachCookies, wrapResponse } from "../../utils/global.js";
 import AuthService from "../services/authService.js";
 
 const register = async (req, res) => {
-	await AuthService.register(req.body);
-	return wrapResponse(res, StatusCodes.CREATED, "Register successfully");
+	await AuthService.register(req);
+	return wrapResponse(res, StatusCodes.CREATED, "Register success, please check your email to verify the account");
 };
 
 const login = async (req, res) => {
