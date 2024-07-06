@@ -1,0 +1,1393 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "MERN Simple Commerce API",
+    "contact": {},
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/api/v1",
+      "variables": {}
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register",
+        "operationId": "Register",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/RegisterRequest"
+                  },
+                  {
+                    "example": {
+                      "name": "fery",
+                      "email": "fery@gmail.com",
+                      "password": "secret"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "name": "fery",
+                "email": "fery@gmail.com",
+                "password": "secret"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/auth/verify": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Email verification",
+        "operationId": "Emailverification",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/EmailverificationRequest"
+                  },
+                  {
+                    "example": {
+                      "verificationToken": "2014115e4f995d7ae96ec5940bd00743cf953ab415be77d8d2e2fddbe47895a81a074e6bd31623ec623e0c6ec160eb989a02",
+                      "email": "fery@gmail.com"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "verificationToken": "2014115e4f995d7ae96ec5940bd00743cf953ab415be77d8d2e2fddbe47895a81a074e6bd31623ec623e0c6ec160eb989a02",
+                "email": "fery@gmail.com"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login",
+        "operationId": "Login",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LoginRequest"
+                  },
+                  {
+                    "example": {
+                      "email": "fery@gmail.com",
+                      "password": "secret"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "email": "fery@gmail.com",
+                "password": "secret"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Forgot password",
+        "operationId": "Forgotpassword",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ForgotpasswordRequest"
+                  },
+                  {
+                    "example": {
+                      "email": "fery@gmail.com"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "email": "fery@gmail.com"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Reset password",
+        "operationId": "Resetpassword",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ResetpasswordRequest"
+                  },
+                  {
+                    "example": {
+                      "password": "secret",
+                      "confirmPassword": "secret",
+                      "email": "fery@gmail.com",
+                      "passwordToken": "e2ada589cc87f0dd3be20a0f535ff7af76a6a060bbc81650df123cebe19ba6599859b9df422d2e01d3299cef237190ed2db0"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "password": "secret",
+                "confirmPassword": "secret",
+                "email": "fery@gmail.com",
+                "passwordToken": "e2ada589cc87f0dd3be20a0f535ff7af76a6a060bbc81650df123cebe19ba6599859b9df422d2e01d3299cef237190ed2db0"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logout",
+        "operationId": "Logout",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LogoutRequest"
+                  },
+                  {
+                    "example": {
+                      "email": "john@gmail.com",
+                      "password": "secret"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "email": "john@gmail.com",
+                "password": "secret"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get all users",
+        "operationId": "Getallusers",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/users/667928c7f4ddf3be89a5e559": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update user",
+        "operationId": "Updateuser",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UpdateuserRequest"
+                  },
+                  {
+                    "example": {
+                      "role": "user"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "role": "user"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/profile/update": {
+      "put": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Update profile",
+        "operationId": "Updateprofile",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UpdateprofileRequest"
+                  },
+                  {
+                    "example": {
+                      "name": "Fery",
+                      "email": "fery@gmail.com"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "name": "Fery",
+                "email": "fery@gmail.com"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/profile/change-password": {
+      "put": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Change pasword",
+        "operationId": "Changepasword",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ChangepaswordRequest"
+                  },
+                  {
+                    "example": {
+                      "current_password": "secret123",
+                      "new_password": "secret",
+                      "confirm_password": "secret",
+                      "p": "pp"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "current_password": "secret123",
+                "new_password": "secret",
+                "confirm_password": "secret",
+                "p": "pp"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Get all categories",
+        "operationId": "Getallcategories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Create category",
+        "operationId": "Createcategory",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreatecategoryRequest"
+                  },
+                  {
+                    "example": {
+                      "name": "Furniture"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "name": "Furniture"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/categories/667aa9d49b26969a7d1af3ee": {
+      "put": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Update category",
+        "operationId": "Updatecategory",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UpdatecategoryRequest"
+                  },
+                  {
+                    "example": {
+                      "name": "test 2",
+                      "test": "dongsss"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "name": "test 2",
+                "test": "dongsss"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/categories/667abe9783809324dfff8450": {
+      "delete": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Delete category",
+        "operationId": "Deletecategory",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/categories/remove-all": {
+      "delete": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Delete all category",
+        "operationId": "Deleteallcategory",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Get all products",
+        "operationId": "Getallproducts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/products/admin": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Create product",
+        "operationId": "Createproduct",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "encoding": {},
+              "schema": {
+                "required": [
+                  "name",
+                  "description",
+                  "price",
+                  "colors",
+                  "category",
+                  "image"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "product 6"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "product 6 description"
+                  },
+                  "price": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 6000
+                  },
+                  "colors": {
+                    "type": "string",
+                    "example": "purple"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "667b9a553988fc586f950d49"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/products/admin/667c385088f4007e6b5e7dc8": {
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Update product",
+        "operationId": "Updateproduct",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "encoding": {},
+              "schema": {
+                "required": [
+                  "name",
+                  "description",
+                  "category",
+                  "image"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "product 3"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "product 3 description"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "667b9a5d3988fc586f950d4d"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/products/admin/667c3ad65e64cece29b58c19": {
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Delete product",
+        "operationId": "Deleteproduct",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/products/admin/remove-all": {
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Delete all products",
+        "operationId": "Deleteallproducts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/reviews": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Get all reviews",
+        "operationId": "Getallreviews",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Create review",
+        "operationId": "Createreview",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreatereviewRequest"
+                  },
+                  {
+                    "example": {
+                      "title": "test title 1 from peter for product 4",
+                      "comment": "test comment 1 for product 4",
+                      "rating": 5,
+                      "product": "667c39d68a3e4243978e3c74"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "title": "test title 1 from peter for product 4",
+                "comment": "test comment 1 for product 4",
+                "rating": 5,
+                "product": "667c39d68a3e4243978e3c74"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/reviews/667ea3f49f3df71ee1623369": {
+      "put": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Update review",
+        "operationId": "Updatereview",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UpdatereviewRequest"
+                  },
+                  {
+                    "example": {
+                      "title": "test title 3 from peter update",
+                      "comment": "test comment 3 update",
+                      "rating": 3,
+                      "product": "667c39d68a3e4243978e3c74"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "title": "test title 3 from peter update",
+                "comment": "test comment 3 update",
+                "rating": 3,
+                "product": "667c39d68a3e4243978e3c74"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      },
+      "delete": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Delete review",
+        "operationId": "Deletereview",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/orders/admin": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get all orders (for admin)",
+        "operationId": "Getallorders(foradmin)",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get user orders",
+        "operationId": "Getuserorders",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Create order",
+        "operationId": "Createorder",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateorderRequest"
+                  },
+                  {
+                    "example": {
+                      "tax": 1000,
+                      "shippingFee": 500,
+                      "items": [
+                        {
+                          "name": "product 6",
+                          "price": 6000,
+                          "image": "products/soal-no-1-599.jpg",
+                          "amount": 2,
+                          "product": "667cf4ec86f90d9823915f9b",
+                          "p": "pp"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "tax": 1000,
+                "shippingFee": 500,
+                "items": [
+                  {
+                    "name": "product 6",
+                    "price": 6000,
+                    "image": "products/soal-no-1-599.jpg",
+                    "amount": 2,
+                    "product": "667cf4ec86f90d9823915f9b",
+                    "p": "pp"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/orders/123": {
+      "put": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Update order",
+        "operationId": "Updateorder",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UpdateorderRequest"
+                  },
+                  {
+                    "example": {
+                      "paymentIntentId": "string",
+                      "clientSecret": "string"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "paymentIntentId": "string",
+                "clientSecret": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegisterRequest": {
+        "title": "RegisterRequest",
+        "required": [
+          "name",
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "name": "fery",
+          "email": "fery@gmail.com",
+          "password": "secret"
+        }
+      },
+      "EmailverificationRequest": {
+        "title": "EmailverificationRequest",
+        "required": [
+          "verificationToken",
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "verificationToken": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "verificationToken": "2014115e4f995d7ae96ec5940bd00743cf953ab415be77d8d2e2fddbe47895a81a074e6bd31623ec623e0c6ec160eb989a02",
+          "email": "fery@gmail.com"
+        }
+      },
+      "LoginRequest": {
+        "title": "LoginRequest",
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "fery@gmail.com",
+          "password": "secret"
+        }
+      },
+      "ForgotpasswordRequest": {
+        "title": "ForgotpasswordRequest",
+        "required": [
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "fery@gmail.com"
+        }
+      },
+      "ResetpasswordRequest": {
+        "title": "ResetpasswordRequest",
+        "required": [
+          "password",
+          "confirmPassword",
+          "email",
+          "passwordToken"
+        ],
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "confirmPassword": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "passwordToken": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "password": "secret",
+          "confirmPassword": "secret",
+          "email": "fery@gmail.com",
+          "passwordToken": "e2ada589cc87f0dd3be20a0f535ff7af76a6a060bbc81650df123cebe19ba6599859b9df422d2e01d3299cef237190ed2db0"
+        }
+      },
+      "LogoutRequest": {
+        "title": "LogoutRequest",
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "john@gmail.com",
+          "password": "secret"
+        }
+      },
+      "UpdateuserRequest": {
+        "title": "UpdateuserRequest",
+        "required": [
+          "role"
+        ],
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "role": "user"
+        }
+      },
+      "UpdateprofileRequest": {
+        "title": "UpdateprofileRequest",
+        "required": [
+          "name",
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "name": "Fery",
+          "email": "fery@gmail.com"
+        }
+      },
+      "ChangepaswordRequest": {
+        "title": "ChangepaswordRequest",
+        "required": [
+          "current_password",
+          "new_password",
+          "confirm_password",
+          "p"
+        ],
+        "type": "object",
+        "properties": {
+          "current_password": {
+            "type": "string"
+          },
+          "new_password": {
+            "type": "string"
+          },
+          "confirm_password": {
+            "type": "string"
+          },
+          "p": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "current_password": "secret123",
+          "new_password": "secret",
+          "confirm_password": "secret",
+          "p": "pp"
+        }
+      },
+      "CreatecategoryRequest": {
+        "title": "CreatecategoryRequest",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "name": "Furniture"
+        }
+      },
+      "UpdatecategoryRequest": {
+        "title": "UpdatecategoryRequest",
+        "required": [
+          "name",
+          "test"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "test": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "name": "test 2",
+          "test": "dongsss"
+        }
+      },
+      "CreatereviewRequest": {
+        "title": "CreatereviewRequest",
+        "required": [
+          "title",
+          "comment",
+          "rating",
+          "product"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "product": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "title": "test title 1 from peter for product 4",
+          "comment": "test comment 1 for product 4",
+          "rating": 5,
+          "product": "667c39d68a3e4243978e3c74"
+        }
+      },
+      "UpdatereviewRequest": {
+        "title": "UpdatereviewRequest",
+        "required": [
+          "title",
+          "comment",
+          "rating",
+          "product"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "product": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "title": "test title 3 from peter update",
+          "comment": "test comment 3 update",
+          "rating": 3,
+          "product": "667c39d68a3e4243978e3c74"
+        }
+      },
+      "CreateorderRequest": {
+        "title": "CreateorderRequest",
+        "required": [
+          "tax",
+          "shippingFee",
+          "items"
+        ],
+        "type": "object",
+        "properties": {
+          "tax": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "shippingFee": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Item"
+            },
+            "description": ""
+          }
+        },
+        "example": {
+          "tax": 1000,
+          "shippingFee": 500,
+          "items": [
+            {
+              "name": "product 6",
+              "price": 6000,
+              "image": "products/soal-no-1-599.jpg",
+              "amount": 2,
+              "product": "667cf4ec86f90d9823915f9b",
+              "p": "pp"
+            }
+          ]
+        }
+      },
+      "Item": {
+        "title": "Item",
+        "required": [
+          "name",
+          "price",
+          "image",
+          "amount",
+          "product",
+          "p"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "image": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "product": {
+            "type": "string"
+          },
+          "p": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "name": "product 6",
+          "price": 6000,
+          "image": "products/soal-no-1-599.jpg",
+          "amount": 2,
+          "product": "667cf4ec86f90d9823915f9b",
+          "p": "pp"
+        }
+      },
+      "UpdateorderRequest": {
+        "title": "UpdateorderRequest",
+        "required": [
+          "paymentIntentId",
+          "clientSecret"
+        ],
+        "type": "object",
+        "properties": {
+          "paymentIntentId": {
+            "type": "string"
+          },
+          "clientSecret": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "paymentIntentId": "string",
+          "clientSecret": "string"
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Auth"
+    },
+    {
+      "name": "Users"
+    },
+    {
+      "name": "Profile"
+    },
+    {
+      "name": "Categories"
+    },
+    {
+      "name": "Products"
+    },
+    {
+      "name": "Reviews"
+    },
+    {
+      "name": "Orders"
+    }
+  ]
+}

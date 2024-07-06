@@ -13,6 +13,7 @@ import router from "../routes/router.js";
 import { baseRoute } from "../config/global.js";
 import rateLimiterOption from "../config/rateLimiter.js";
 import { dirName } from "../utils/global.js";
+import swagger from "../docs/swagger.js";
 
 const app = express();
 
@@ -25,6 +26,8 @@ app.use(cookieParser(process.env.COOKIE_KEY));
 app.use(fileupload());
 app.use(express.json());
 app.use(express.static(path.join(dirName(import.meta.url), "../../public")));
+
+swagger(app);
 
 app.use(baseRoute, router);
 
