@@ -62,16 +62,12 @@ const userSchema = mongoose.Schema(
 userSchema.index({ name: -1, email: -1 });
 userSchema.plugin(uniqueValidator, { message: "{PATH} has been registered" });
 
-async function hashPassword() {
-	const doc = this instanceof mongoose.Query ? await this.model.findOne(this.getQuery()) : this;
-
-	if (!doc.isModified("password")) return;
+userSchema.pre("save", async function () {
+	if (!this.isModified("password")) return;
 
 	const salt = await bcrypt.genSalt(10);
-	doc.password = await bcrypt.hash(doc.password, salt);
-}
-
-userSchema.pre(["save", "findOneAndUpdate"], hashPassword);
+	this.password = await bcrypt.hash(this.password, salt);
+});
 
 userSchema.methods.toJSON = function () {
 	const userObject = this.toObject();
