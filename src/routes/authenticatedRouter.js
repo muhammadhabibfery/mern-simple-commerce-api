@@ -9,12 +9,11 @@ import { adminOrderRouter, orderRouter } from "./api-segment/orderRouter.js";
 
 const authenticatedApiRouter = express.Router();
 
-authenticatedApiRouter.use(authenticationHandler);
-authenticatedApiRouter.use("/users", userRouter);
-authenticatedApiRouter.use("/profile", profileRouter);
-authenticatedApiRouter.use("/categories", categoryRouter);
-authenticatedApiRouter.use("/products/admin", productRouter);
-authenticatedApiRouter.use("/reviews", reviewRouter);
-authenticatedApiRouter.use("/orders", adminOrderRouter, orderRouter);
+authenticatedApiRouter.use("/users", [authenticationHandler], userRouter);
+authenticatedApiRouter.use("/profile", [authenticationHandler], profileRouter);
+authenticatedApiRouter.use("/categories", [authenticationHandler], categoryRouter);
+authenticatedApiRouter.use("/products/admin", [authenticationHandler], productRouter);
+authenticatedApiRouter.use("/reviews", [authenticationHandler], reviewRouter);
+authenticatedApiRouter.use("/orders", [authenticationHandler], adminOrderRouter, orderRouter);
 
 export default authenticatedApiRouter;
