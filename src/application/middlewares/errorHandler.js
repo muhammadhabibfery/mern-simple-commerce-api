@@ -6,7 +6,7 @@ import UnauthenticatedError from "../../errors/unauthenticatedError.js";
 import UnauthorizedError from "../../errors/UnauthorizedError.js";
 import BadRequestError from "../../errors/badRequestError.js";
 
-const errorHandler = (err, req, res) => {
+const errorHandler = (err, req, res, next) => {
 	let status = err?.code || StatusCodes.INTERNAL_SERVER_ERROR;
 	let message = err?.message;
 	let errors = undefined;
