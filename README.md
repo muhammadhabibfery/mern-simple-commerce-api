@@ -7,17 +7,14 @@ REST API for E-Commerce platform.
 </h5>
 
 <p align="center">
-    <a href="https://nodejs.org/en">
-        <img src="https://img.shields.io/badge/Node.js-%3E%3D20-%2357A745
-        " />
+    <a href="https://nodejs.org/en" target="_blank">
+        <img src="https://img.shields.io/badge/Node.js-%3E%3D20-%2357A745" />
     </a>
-    <a href="https://expressjs.com">
-        <img src="https://img.shields.io/badge/Express-%3E%3D4.x-%23EEEEEE
-        " />
+    <a href="https://expressjs.com" target="_blank">
+        <img src="https://img.shields.io/badge/Express-%3E%3D4.x-%23EEEEEE" />
     </a>
-    <a href="https://www.mongodb.com">
-        <img src="https://img.shields.io/badge/MongoDB-%3E%3D8.x-%23569134
-        " />
+    <a href="https://www.mongodb.com" target="_blank">
+        <img src="https://img.shields.io/badge/MongoDB-%3E%3D8.x-%23569134" />
     </a>
 </p>
 
@@ -118,7 +115,7 @@ npm run dev
 <img src="/public/api-docs.png" alt="Preview" width="75%"/>
 </br>
 <p style="font-weight: bold;">
-Complete REST API Documentation can be found <a href="https://api-mern-commerce.muhammadhabibfery.com/api/v1/api-docs">here</a>
+Complete REST API Documentation can be found <a href="https://api-mern-commerce.muhammadhabibfery.com/api/v1/api-docs" target="_blank">here</a>
 </p>
 
 
