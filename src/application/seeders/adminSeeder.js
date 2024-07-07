@@ -5,6 +5,7 @@ const adminData = {
 	email: "admin@gmail.com",
 	password: "secret",
 	role: "admin",
+	verifiedAt: Date.now(),
 };
 
 const adminSeeder = async () => {

@@ -4,4 +4,6 @@ const connect = (url) => mongoose.connect(url);
 
 const disconnect = () => mongoose.disconnect();
 
-export default { connect, disconnect };
+const start = mongoose.connection;
+
+export default { connect, disconnect, start };

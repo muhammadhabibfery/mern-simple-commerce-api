@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
 import { checkPermission } from "../../utils/global.js";
+import NotFoundError from "../../errors/notFoundError.js";
 
 export const availableReviewFields = ["title", "comment", "rating"];
 
@@ -38,10 +39,11 @@ reviewSchema.plugin(uniqueValidator, { message: "{PATH} has been created" });
 
 reviewSchema.pre(["findOneAndUpdate", "findOneAndDelete"], async function () {
 	const doc = await this.model.findOne(this.getQuery());
-	if (doc) {
-		const currentUser = this.options.additonalData;
-		checkPermission(currentUser, doc.user);
-	}
+
+	if (!doc) throw new NotFoundError("Review not found");
+
+	const currentUser = this.options.additonalData;
+	checkPermission(currentUser, doc.user);
 });
 
 reviewSchema.post(["save", "findOneAndUpdate", "findOneAndDelete"], async function (doc) {
