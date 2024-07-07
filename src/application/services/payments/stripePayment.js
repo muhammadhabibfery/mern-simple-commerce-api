@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+import { orderStatusEnum } from "../../models/orderModel.js";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const createPayment = async (total) => {
@@ -18,13 +19,13 @@ const retrievePayment = async (paymentIntentId) => {
 
 	switch (paymentIntent.status) {
 		case "succeeded":
-			status = "paid";
+			status = orderStatusEnum[2];
 			break;
 		case "processing":
-			status = "delivered";
+			status = orderStatusEnum[3];
 			break;
 		default:
-			status = "failed";
+			status = orderStatusEnum[1];
 	}
 
 	return { orderStatus: status, paymentIntentStatus: paymentIntent.status };

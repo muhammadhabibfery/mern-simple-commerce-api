@@ -2,9 +2,13 @@ import { modelAction, wrapData } from "../../utils/global.js";
 import StripePayment from "../services/payments/stripePayment.js";
 import { createOrderValidation, updateOrderValidation } from "../validations/orderValidation.js";
 import validate from "../validations/validate.js";
-import Order from "./orderModel.js";
+import Order, { orderStatusEnum } from "./orderModel.js";
 import { availableUserFields } from "./userModel.js";
 import NotFoundError from "../../errors/notFoundError.js";
+import CustomError from "../../errors/customError.js";
+import { StatusCodes } from "http-status-codes";
+import Db from "../../config/database.js";
+import Product from "./productModel.js";
 
 let sortList = "-createdAt -_id";
 
@@ -62,12 +66,42 @@ const update = async ({ params, body }) => {
 		queries: { _id: id, paymentIntentId, clientSecret },
 		errClass: new NotFoundError("Order not found"),
 	});
-
 	const { orderStatus, paymentIntentStatus } = await StripePayment.retrievePayment(paymentIntentId);
-	order.status = orderStatus;
-	await order.save();
+
+	const session = await Db.start.startSession();
+	try {
+		session.startTransaction();
+
+		if (orderStatus === orderStatusEnum[2]) {
+			await updateProductStock(order);
+		}
+		order.status = orderStatus;
+		await order.save();
+
+		await session.commitTransaction();
+	} catch (error) {
+		await session.abortTransaction();
+		throw new CustomError(error.message, error?.code || StatusCodes.INTERNAL_SERVER_ERROR);
+	}
+	session.endSession();
 
 	return { status: paymentIntentStatus };
+};
+
+const updateProductStock = async (order) => {
+	if (order.status !== orderStatusEnum[2]) {
+		for (const item of order.orderItems) {
+			const product = await modelAction({
+				model: Product,
+				action: "get",
+				queries: { _id: item.product },
+				errClass: new NotFoundError("Product not found"),
+			});
+
+			product.stock -= item.amount;
+			await product.save();
+		}
+	}
 };
 
 const addAdditionalData = (data, userId) => {
